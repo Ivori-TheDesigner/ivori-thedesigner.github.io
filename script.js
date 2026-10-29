@@ -18,9 +18,9 @@ const stageData = {
   hypothesis: ['02 / 07', 'The Hypothesis', 'People could choose their own meals within one order window and receive them at a shared drop zone.', '↗'],
   compound: ['03 / 07', 'The Compound', 'Research the lunch routine, ordering needs, competing services, and operational constraints.', '✳'],
   formula: ['04 / 07', 'The Formula', 'Design a clear flow for discovery, individual choice, the countdown, and coordinated drop-off.', '⌁'],
-  reaction: ['05 / 07', 'The Reaction', 'Test the flow, notice where people hesitate, and use that feedback to refine the experience.', '↝'],
-  transformation: ['06 / 07', 'The Transformation', 'Bring the service concept, product interface, and brand into one coherent system.', '✦'],
-  'lab-notes': ['07 / 07', 'Lab notes', 'Capture what changed and what a future pilot still needs to validate.', '✎']
+  reaction: ['05 / 07', 'The Reaction', 'I refined the welcome screen to balance Vittlez’s bold personality with a clearer, more trustworthy first impression. An accessibility review also revealed issues with neon-green text contrast, button sizing, and icon hierarchy, prompting adjustments.', '↝'],
+  transformation: ['06 / 07', 'The Transformation', 'I brought workplace verification, curated restaurant options, visible order cutoffs, transparent pricing, and drop-zone pickup details into one ordering experience—designed to help employees choose lunch with less uncertainty.', '✦'],
+  'lab-notes': ['07 / 07', 'Lab notes', 'Designing Vittlez reinforced how consistent price visibility can build trust throughout an ordering journey. Next time, I would explore more alternatives earlier and build accessibility into the first wireframes. My next planned addition is a restaurant dashboard for managing batch orders and fulfillment.', '✎']
 };
 const tabs = [...document.querySelectorAll('.stage-tabs [role="tab"]')];
 const stageContent = document.querySelector('#stage-content');
