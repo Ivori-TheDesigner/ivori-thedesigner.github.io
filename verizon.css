@@ -58,3 +58,16 @@
 .formula-principle>strong{display:block;font-size:clamp(17px,2.4vw,23px);line-height:1.35;margin:9px 0}
 .case-content .formula-principle p{font-size:14px;line-height:1.7;margin:0}
 @media(max-width:850px){.formula-checkpoints{grid-template-columns:1fr}.formula-checkpoint{padding:18px}.formula-condition{margin-top:10px}}
+
+/* Reaction: original acceptance and decline screenshots */
+.verizon-decision-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:820px;margin:28px auto 36px}
+.verizon-decision-screen{min-width:0;margin:0;overflow:hidden;background:#171426;border:1px solid #685789;border-radius:16px}
+.verizon-decision-screen>a:first-child{display:flex;align-items:center;justify-content:center;min-height:250px;padding:14px;background:#0e1123}
+.verizon-decision-screen img{display:block;width:100%;height:auto;max-height:440px;object-fit:contain;border-radius:8px}
+.verizon-decision-screen figcaption{margin:0;padding:18px 20px 22px;font-family:inherit;font-size:14px;line-height:1.6;color:#d9d2e5}
+.verizon-decision-screen figcaption span{display:block;font:750 11px/1.5 monospace;letter-spacing:.08em;color:#d0bbff}
+.verizon-decision-screen figcaption strong{display:block;margin:8px 0;font-size:17px;line-height:1.4;color:#fff}
+.case-content .verizon-decision-screen figcaption p{font-size:14px;line-height:1.6;margin:0 0 12px}
+.verizon-enlarge-link{font-size:13px;color:#d4c3ff;text-decoration:underline;text-underline-offset:4px}
+.verizon-decision-screen a:focus-visible{outline:3px solid #d4c3ff;outline-offset:-3px}
+@media(max-width:650px){.verizon-decision-gallery{grid-template-columns:1fr;gap:18px}.verizon-decision-screen>a:first-child{min-height:0}.verizon-decision-screen img{max-height:520px}}
