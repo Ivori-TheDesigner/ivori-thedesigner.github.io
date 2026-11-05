@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operation Verizon — Switcher Device Payoff Agreement</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-variant-numeric: tabular-nums;
+    }
+    body {
+      background-color: #f4f4f5;
+      color: #09090b;
+    }
+    /* Phone Mockup Frame Styling */
+    .phone-frame {
+      max-width: 390px;
+      margin: 0 auto;
+      border: 12px solid #000000;
+      border-radius: 44px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      background: #ffffff;
+      position: relative;
+    }
+    .phone-notch {
+      width: 120px;
+      height: 24px;
+      background: #000000;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      margin: 0 auto;
+    }
+    input[type="checkbox"] {
+      accent-color: #EE0000;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- Top Prototype Control Bar (Pure Black Theme) -->
+  <div class="sticky top-0 z-40 bg-black text-white border-b border-zinc-800 px-4 py-3 shadow-md">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="inline-block w-3 h-3 rounded-full bg-[#EE0000]"></span>
+        <span class="font-bold tracking-tight text-sm uppercase">Operation Verizon Prototype</span>
+      </div>
+
+      <!-- Role Switcher -->
+      <div class="flex items-center gap-2 bg-zinc-900 p-1 rounded-lg border border-zinc-800">
+        <button id="btn-rep" onclick="setRole('rep')" class="px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all bg-white text-black shadow-sm">
+          Sales Rep View
+        </button>
+        <button id="btn-customer" onclick="setRole('customer')" class="px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all text-zinc-400 hover:text-white">
+          Customer View
+        </button>
+      </div>
+
+      <!-- Viewport Switcher -->
+      <div class="flex items-center gap-2 bg-zinc-900 p-1 rounded-lg border border-zinc-800">
+        <button id="btn-desktop" onclick="setViewport('desktop')" class="px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all bg-white text-black shadow-sm">
+          Desktop View
+        </button>
+        <button id="btn-mobile" onclick="setViewport('mobile')" class="px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all text-zinc-400 hover:text-white">
+          Mobile Phone View (Customer POV)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Workspace Wrapper -->
+  <div class="max-w-4xl mx-auto px-4 mt-8">
+    <div id="viewport-container" class="transition-all duration-300">
+      
+      <!-- Dynamic Mobile Status Bar (Only visible in Phone View) -->
+      <div id="mobile-header-bar" class="hidden bg-white pb-2">
+        <div class="phone-notch"></div>
+        <div class="flex justify-between items-center px-6 pt-1 text-[11px] font-semibold text-black">
+          <span>9:41</span>
+          <div class="flex items-center gap-1.5">
+            <span>5G</span>
+            <span class="w-4 h-2.5 bg-black rounded-sm inline-block"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Switcher Card Container -->
+      <div id="main-card" class="bg-white rounded-2xl shadow-xl border border-zinc-200 overflow-hidden">
+        
+        <!-- Card Header (Pure Black with Red Logo & No Checkmark) -->
+        <div class="bg-black text-white p-6 sm:p-8 border-b border-zinc-800">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center">
+              <span class="text-xl font-extrabold tracking-tight text-[#EE0000]">verizon</span>
+            </div>
+            <span class="text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-700 px-3 py-1 rounded-full">
+              Order #892104
+            </span>
+          </div>
+          <h1 id="header-title" class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            Switcher Device Payoff Agreement
+          </h1>
+          <p class="text-zinc-400 text-xs sm:text-sm mt-1">
+            Review line qualification eligibility, estimated payoff amounts, and reimbursement steps.
+          </p>
+        </div>
+
+        <!-- Declined Status Banner (Hidden unless customer confirms decline) -->
+        <div id="declined-status-banner" class="hidden bg-red-50 border-b border-red-200 px-6 py-3.5 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#EE0000] shrink-0"></span>
+            <p class="text-xs font-bold text-red-950">
+              Switcher Payoff Promo Declined by Customer — Lines will proceed with standard port-in activation ($0.00 payoff reimbursement).
+            </p>
+          </div>
+          <button onclick="restorePromo()" class="text-xs font-bold text-white bg-black px-3 py-1.5 rounded-lg hover:bg-zinc-800 shrink-0">
+            Restore Promo
+          </button>
+        </div>
+
+        <!-- Card Body -->
+        <div class="p-5 sm:p-8 space-y-8">
+
+          <!-- SECTION 1: Line Qualification & Payoff Amounts -->
+          <div id="section-1-wrapper" class="rounded-xl border border-zinc-200 p-4 sm:p-6 transition-all bg-white">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 block">Step 1</span>
+                <h2 class="text-base sm:text-lg font-bold text-black">Line Qualification & Payoff Amounts</h2>
+              </div>
+              <span id="section-1-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-black text-white">
+                Edit
+              </span>
+            </div>
+
+            <!-- Lines List -->
+            <div class="space-y-4">
+              
+              <!-- Line 1 -->
+              <div class="line-card rounded-xl border border-zinc-200 p-4 transition-all bg-zinc-50/60">
+                <div class="flex flex-wrap items-start justify-between gap-2 pb-3 mb-3 border-b border-zinc-200">
+                  <div>
+                    <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                      <span class="text-sm font-bold text-black">(555) 014-9921</span>
+                      <span class="text-xs font-semibold text-zinc-600">• iPhone 15 Pro • Port-In</span>
+                    </div>
+                    <div class="mt-1 flex items-center gap-1.5">
+                      <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">IMEI:</span>
+                      <span class="text-xs font-semibold text-zinc-600 bg-zinc-200/70 px-2 py-0.5 rounded">354891092847102</span>
+                    </div>
+                  </div>
+                  <span id="l1-status-pill" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900">
+                    Qualified
+                  </span>
+                </div>
+
+                <div id="line-grid-1" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                  <!-- 3+ Cycles Paid Check -->
+                  <div>
+                    <label class="block text-xs font-semibold text-zinc-600 mb-1.5">3+ Billing Cycles Paid?</label>
+                    <div class="inline-flex rounded-lg border border-zinc-300 p-0.5 bg-white w-full sm:w-auto">
+                      <button type="button" id="l1-yes" onclick="setTenure(1, true)" class="flex-1 sm:flex-initial px-3.5 py-1.5 text-xs font-bold rounded-md bg-black text-white transition-all">
+                        Yes
+                      </button>
+                      <button type="button" id="l1-no" onclick="setTenure(1, false)" class="flex-1 sm:flex-initial px-3.5 py-1.5 text-xs font-bold rounded-md text-zinc-600 hover:text-black transition-all">
+                        No
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Previous Balance Input -->
+                  <div>
+                    <label class="block text-xs font-semibold text-zinc-600 mb-1.5">Previous Carrier Balance</label>
+                    <div class="relative">
+                      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-zinc-500">$</span>
+                      <input type="number" id="l1-input" value="640" oninput="recalc()" class="w-full pl-7 pr-3 py-1.5 text-sm font-bold text-black bg-white border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" />
+                    </div>
+                  </div>
+
+                  <!-- Calculated Breakdown -->
+                  <div class="bg-white p-3 rounded-lg border border-zinc-200">
+                    <div class="flex justify-between text-xs mb-1">
+                      <span class="text-zinc-500 font-medium">Verizon Payoff:</span>
+                      <span id="l1-payoff" class="font-bold text-emerald-700">$640.00</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                      <span class="text-zinc-500 font-medium">You Pay Carrier:</span>
+                      <span id="l1-oop" class="font-bold text-black">$0.00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Line 2 -->
+              <div class="line-card rounded-xl border border-zinc-200 p-4 transition-all bg-zinc-50/60">
+                <div class="flex flex-wrap items-start justify-between gap-2 pb-3 mb-3 border-b border-zinc-200">
+                  <div>
+                    <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                      <span class="text-sm font-bold text-black">(555) 014-9922</span>
+                      <span class="text-xs font-semibold text-zinc-600">• Galaxy S24 Ultra • Port-In</span>
+                    </div>
+                    <div class="mt-1 flex items-center gap-1.5">
+                      <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">IMEI:</span>
+                      <span class="text-xs font-semibold text-zinc-600 bg-zinc-200/70 px-2 py-0.5 rounded">359204118374659</span>
+                    </div>
+                  </div>
+                  <span id="l2-status-pill" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900">
+                    Max Cap Applied ($800)
+                  </span>
+                </div>
+
+                <div id="line-grid-2" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                  <!-- 3+ Cycles Paid Check -->
+                  <div>
+                    <label class="block text-xs font-semibold text-zinc-600 mb-1.5">3+ Billing Cycles Paid?</label>
+                    <div class="inline-flex rounded-lg border border-zinc-300 p-0.5 bg-white w-full sm:w-auto">
+                      <button type="button" id="l2-yes" onclick="setTenure(2, true)" class="flex-1 sm:flex-initial px-3.5 py-1.5 text-xs font-bold rounded-md bg-black text-white transition-all">
+                        Yes
+                      </button>
+                      <button type="button" id="l2-no" onclick="setTenure(2, false)" class="flex-1 sm:flex-initial px-3.5 py-1.5 text-xs font-bold rounded-md text-zinc-600 hover:text-black transition-all">
+                        No
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Previous Balance Input -->
+                  <div>
+                    <label class="block text-xs font-semibold text-zinc-600 mb-1.5">Previous Carrier Balance</label>
+                    <div class="relative">
+                      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-zinc-500">$</span>
+                      <input type="number" id="l2-input" value="920" oninput="recalc()" class="w-full pl-7 pr-3 py-1.5 text-sm font-bold text-black bg-white border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" />
+                    </div>
+                  </div>
+
+                  <!-- Calculated Breakdown -->
+                  <div class="bg-white p-3 rounded-lg border border-zinc-200">
+                    <div class="flex justify-between text-xs mb-1">
+                      <span class="text-zinc-500 font-medium">Verizon Payoff:</span>
+                      <span id="l2-payoff" class="font-bold text-emerald-700">$800.00</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                      <span class="text-zinc-500 font-medium">You Pay Carrier:</span>
+                      <span id="l2-oop" class="font-bold text-[#EE0000]">$120.00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Dynamic Cap Advisory Banner -->
+            <div id="cap-warning-banner" class="mt-4 p-3.5 rounded-lg bg-amber-50 border border-amber-300 flex items-start gap-3">
+              <span class="text-amber-700 font-bold text-sm leading-none mt-0.5">⚠️</span>
+              <p class="text-xs text-amber-950 font-medium leading-relaxed">
+                <strong class="font-bold">Reimbursement Cap Notice:</strong> Verizon covers up to $800.00 per eligible line. Any remaining balance above $800.00 (<span id="banner-oop-amount" class="font-bold">$120.00</span>) is the customer's responsibility to pay their previous provider.
+              </p>
+            </div>
+
+            <!-- Summary Totals Bar (Pure Black) -->
+            <div class="mt-5 pt-4 border-t border-zinc-200 flex flex-wrap items-center justify-between gap-4 bg-black text-white p-4 rounded-xl">
+              <div>
+                <span class="text-xs text-zinc-400 block font-medium">Total Estimated Verizon Payoff</span>
+                <span id="total-payoff" class="text-xl sm:text-2xl font-extrabold text-white">$1,440.00</span>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-zinc-400 block font-medium">Total Remaining Customer Balance</span>
+                <span id="total-oop" class="text-lg sm:text-xl font-bold text-amber-400">$120.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: Rules & Reimbursement Process (Color-Topped Attention Cards) -->
+          <div>
+            <div class="mb-4">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 block">Step 2</span>
+              <h2 class="text-base sm:text-lg font-bold text-black">Important Payoff Rules & Next Steps</h2>
+            </div>
+
+            <div id="rules-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              <!-- Card 1: Where & When to Upload (Verizon Red Top Bar) -->
+              <div class="rounded-xl border border-zinc-200 shadow-sm overflow-hidden bg-white flex flex-col">
+                <div class="bg-[#EE0000] text-white px-4 py-2.5 flex items-center justify-between">
+                  <span class="text-xs font-extrabold uppercase tracking-wide">1. Where & When to Upload</span>
+                  <span class="text-xs font-bold bg-black/20 px-2 py-0.5 rounded">60-Day Window</span>
+                </div>
+                <div class="p-4 text-xs text-zinc-700 space-y-1.5 leading-relaxed flex-1">
+                  <p class="font-bold text-black text-sm">My Verizon App or vzw.com/rebate</p>
+                  <p>Submit your previous carrier's final bill inside the <strong class="text-black">My Verizon App</strong> under the <strong class="text-black">Switcher Tracker</strong> tab within <strong class="text-black">60 days</strong> of activation.</p>
+                </div>
+              </div>
+
+              <!-- Card 2: Required Final Bill Details (Pure Black Top Bar) -->
+              <div class="rounded-xl border border-zinc-200 shadow-sm overflow-hidden bg-white flex flex-col">
+                <div class="bg-black text-white px-4 py-2.5 flex items-center justify-between">
+                  <span class="text-xs font-extrabold uppercase tracking-wide">2. Final Bill Requirement</span>
+                  <span class="text-xs font-bold bg-white/15 px-2 py-0.5 rounded">Required Page</span>
+                </div>
+                <div class="p-4 text-xs text-zinc-700 space-y-1.5 leading-relaxed flex-1">
+                  <p class="font-bold text-black text-sm">Must Show Device Payoff Amount</p>
+                  <p>Upload the itemized <strong class="text-black">Equipment Installment Plan (EIP)</strong> page showing your <strong class="text-black">Final Device Payoff Amount</strong>, device IMEI, and phone numbers—not the generic summary page.</p>
+                </div>
+              </div>
+
+              <!-- Card 3: Live Progress Tracker (Emerald Green Top Bar) -->
+              <div class="rounded-xl border border-zinc-200 shadow-sm overflow-hidden bg-white flex flex-col">
+                <div class="bg-emerald-700 text-white px-4 py-2.5 flex items-center justify-between">
+                  <span class="text-xs font-extrabold uppercase tracking-wide">3. Live Status Tracker</span>
+                  <span class="text-xs font-bold bg-black/20 px-2 py-0.5 rounded">Real-Time Alerts</span>
+                </div>
+                <div class="p-4 text-xs text-zinc-700 space-y-2 leading-relaxed flex-1">
+                  <p class="font-bold text-black text-sm">Track Every Step in My Verizon</p>
+                  <p>Follow your reimbursement status in real time with automated SMS & email alerts:</p>
+                  <div class="pt-1 flex items-center justify-between text-[11px] font-bold text-black bg-zinc-100 px-3 py-2 rounded-lg">
+                    <span>Activated</span>
+                    <span class="text-zinc-400">→</span>
+                    <span>Uploaded</span>
+                    <span class="text-zinc-400">→</span>
+                    <span>Verified</span>
+                    <span class="text-zinc-400">→</span>
+                    <span class="text-emerald-700">Card Sent</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4: How You Get Reimbursed (Amber Gold Top Bar) -->
+              <div class="rounded-xl border border-zinc-200 shadow-sm overflow-hidden bg-white flex flex-col">
+                <div class="bg-amber-600 text-white px-4 py-2.5 flex items-center justify-between">
+                  <span class="text-xs font-extrabold uppercase tracking-wide">4. Payout Method</span>
+                  <span class="text-xs font-bold bg-black/20 px-2 py-0.5 rounded">6–8 Weeks</span>
+                </div>
+                <div class="p-4 text-xs text-zinc-700 space-y-1.5 leading-relaxed flex-1">
+                  <p class="font-bold text-black text-sm">Virtual Prepaid Mastercard®</p>
+                  <p>Pay your previous carrier directly first. Once your bill is verified, your <strong class="text-black">Virtual Prepaid Mastercard</strong> arrives within <strong class="text-black">6–8 weeks</strong> via email and inside the My Verizon app.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SECTION 3: Customer Sign Off -->
+          <div id="section-3-wrapper" class="rounded-xl border-2 border-zinc-200 p-4 sm:p-6 transition-all bg-zinc-50">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 block">Step 3</span>
+                <h2 class="text-base sm:text-lg font-bold text-black">Customer Sign Off</h2>
+              </div>
+              <span id="section-3-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-zinc-200 text-zinc-700">
+                Awaiting Customer
+              </span>
+            </div>
+
+            <!-- Rep Waiting Banner (Only visible in Rep Mode) -->
+            <div id="rep-waiting-banner" class="mb-4 p-3 rounded-lg bg-zinc-200/80 border border-zinc-300 flex items-center justify-between">
+              <span class="text-xs font-semibold text-zinc-800">
+                Customer signature checkboxes are locked in Rep View. Switch to Customer View to sign.
+              </span>
+              <button onclick="setRole('customer')" class="text-xs font-bold bg-black text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-all shrink-0 ml-2">
+                Preview Customer View →
+              </button>
+            </div>
+
+            <!-- Checkboxes -->
+            <div class="space-y-3">
+              <label id="label-cb1" class="flex items-start gap-3 p-3.5 rounded-xl border border-zinc-200 bg-white cursor-pointer transition-all hover:border-black">
+                <input type="checkbox" id="cb1" onchange="updateSignButton()" class="mt-0.5 w-4 h-4 rounded border-zinc-300 focus:ring-black" disabled />
+                <span class="text-xs sm:text-sm text-zinc-800 font-medium leading-relaxed">
+                  <strong class="font-bold text-black">Direct Carrier Payment & Reimbursement:</strong> I understand I am responsible for paying my previous carrier's final bill directly, and Verizon will reimburse me up to $800/line via a Virtual Prepaid Mastercard within 6–8 weeks of approval.
+                </span>
+              </label>
+
+              <label id="label-cb2" class="flex items-start gap-3 p-3.5 rounded-xl border border-zinc-200 bg-white cursor-pointer transition-all hover:border-black">
+                <input type="checkbox" id="cb2" onchange="updateSignButton()" class="mt-0.5 w-4 h-4 rounded border-zinc-300 focus:ring-black" disabled />
+                <span class="text-xs sm:text-sm text-zinc-800 font-medium leading-relaxed">
+                  <strong class="font-bold text-black">Final Bill Upload Requirement:</strong> I agree to upload my closing bill showing at least 3 completed billing cycles and the itemized <strong class="font-bold text-black">Final Device Payoff Amount</strong> in the My Verizon App or at vzw.com/rebate within 60 days.
+                </span>
+              </label>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-end gap-3">
+              <button type="button" onclick="openDeclineModal()" class="w-full sm:w-auto px-5 py-2.5 rounded-full text-xs font-bold border border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-[#EE0000] hover:border-red-300 transition-all">
+                Decline Switcher Promo
+              </button>
+              <button type="button" id="btn-submit" onclick="submitAgreement()" disabled class="w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-bold bg-[#EE0000] text-white opacity-40 cursor-not-allowed transition-all shadow-md">
+                Acknowledge & Sign Agreement
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Confirmation Modal (Signed) -->
+  <div id="modal-success" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-zinc-200 text-center">
+      <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+        ✓
+      </div>
+      <h3 class="text-xl font-bold text-black">Switcher Agreement Signed</h3>
+      <p class="text-xs sm:text-sm text-zinc-600 mt-2 leading-relaxed">
+        A copy of this Switcher Device Payoff Agreement and your live Tracking ID (<strong class="text-black">#VZ-92811</strong>) have been added to your <strong class="text-black">My Verizon App</strong>.
+      </p>
+      <div class="mt-5 p-4 rounded-xl bg-zinc-100 text-left text-xs space-y-1.5">
+        <div class="flex justify-between">
+          <span class="text-zinc-500 font-medium">Total Approved Payoff Estimate:</span>
+          <span id="modal-payoff" class="font-bold text-black">$1,440.00</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-zinc-500 font-medium">Upload Deadline:</span>
+          <span class="font-bold text-black">60 Days from Activation</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-zinc-500 font-medium">Payout Method:</span>
+          <span class="font-bold text-black">Virtual Prepaid Mastercard</span>
+        </div>
+      </div>
+      <button onclick="closeModal()" class="mt-6 w-full py-3 rounded-full bg-black text-white text-xs sm:text-sm font-bold hover:bg-zinc-800 transition-all">
+        Done
+      </button>
+    </div>
+  </div>
+
+  <!-- Decline Modal (When Customer Declines Promo) -->
+  <div id="modal-decline" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-zinc-200 text-center">
+      <div class="w-12 h-12 rounded-full bg-red-100 text-[#EE0000] flex items-center justify-center mx-auto mb-4 text-xl font-extrabold">
+        ✕
+      </div>
+      <h3 class="text-xl font-bold text-black">Switcher Payoff Promo Declined</h3>
+      <p class="text-xs sm:text-sm text-zinc-600 mt-2 leading-relaxed">
+        You have opted out of the <strong class="text-black">Switcher Device Payoff Agreement</strong> for Order <strong class="text-black">#892104</strong>. Your lines will still port over, but no device payoff reimbursement will be issued.
+      </p>
+      <div class="mt-5 p-4 rounded-xl bg-red-50/70 border border-red-200 text-left text-xs space-y-2">
+        <div class="flex justify-between">
+          <span class="text-zinc-600 font-medium">Switcher Promo Status:</span>
+          <span class="font-bold text-[#EE0000]">Declined & Removed ($0.00)</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-zinc-600 font-medium">Prior Carrier Balances:</span>
+          <span id="decline-modal-oop" class="font-bold text-black">$1,560.00 (100% Customer Resp.)</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-zinc-600 font-medium">Order Action:</span>
+          <span class="font-bold text-black">Proceed with Standard Port-In</span>
+        </div>
+      </div>
+      <div class="mt-6 space-y-2.5">
+        <button onclick="closeDeclineModal()" class="w-full py-3 rounded-full bg-black text-white text-xs sm:text-sm font-bold hover:bg-zinc-800 transition-all">
+          Return to Agreement (Keep Payoff Promo)
+        </button>
+        <button onclick="confirmDeclinePromo()" class="w-full py-2.5 rounded-full border border-zinc-300 text-zinc-700 text-xs font-bold hover:bg-zinc-100 transition-all">
+          Confirm Decline & Continue Without Promo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentRole = 'rep';
+    let currentViewport = 'desktop';
+    let tenure = { 1: true, 2: true };
+
+    function setRole(role) {
+      currentRole = role;
+      const btnRep = document.getElementById('btn-rep');
+      const btnCustomer = document.getElementById('btn-customer');
+      const sec1Wrapper = document.getElementById('section-1-wrapper');
+      const sec1Badge = document.getElementById('section-1-badge');
+      const sec3Wrapper = document.getElementById('section-3-wrapper');
+      const sec3Badge = document.getElementById('section-3-badge');
+      const repWaitBanner = document.getElementById('rep-waiting-banner');
+      const cb1 = document.getElementById('cb1');
+      const cb2 = document.getElementById('cb2');
+      const l1Input = document.getElementById('l1-input');
+      const l2Input = document.getElementById('l2-input');
+
+      if (role === 'rep') {
+        btnRep.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all bg-white text-black shadow-sm';
+        btnCustomer.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all text-zinc-400 hover:text-white';
+
+        // Enable Section 1 for Rep
+        sec1Wrapper.className = 'rounded-xl border-2 border-black p-4 sm:p-6 transition-all bg-white';
+        sec1Badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-black text-white';
+        sec1Badge.textContent = 'Edit';
+        l1Input.disabled = false;
+        l2Input.disabled = false;
+        l1Input.classList.remove('bg-zinc-100', 'text-zinc-500');
+        l2Input.classList.remove('bg-zinc-100', 'text-zinc-500');
+
+        // Lock Section 3 for Rep
+        sec3Wrapper.className = 'rounded-xl border border-zinc-200 p-4 sm:p-6 transition-all bg-zinc-100 opacity-80';
+        sec3Badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-zinc-200 text-zinc-700';
+        sec3Badge.textContent = 'Locked for Rep';
+        repWaitBanner.classList.remove('hidden');
+        cb1.disabled = true;
+        cb2.disabled = true;
+      } else {
+        btnCustomer.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all bg-white text-black shadow-sm';
+        btnRep.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all text-zinc-400 hover:text-white';
+
+        // Gray out / Lock Section 1 for Customer
+        sec1Wrapper.className = 'rounded-xl border border-zinc-200 p-4 sm:p-6 transition-all bg-zinc-100/90';
+        sec1Badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-zinc-200 text-zinc-700';
+        sec1Badge.textContent = 'Locked';
+        l1Input.disabled = true;
+        l2Input.disabled = true;
+        l1Input.classList.add('bg-zinc-100', 'text-zinc-500');
+        l2Input.classList.add('bg-zinc-100', 'text-zinc-500');
+
+        // Unlock Section 3 for Customer
+        sec3Wrapper.className = 'rounded-xl border-2 border-black p-4 sm:p-6 transition-all bg-white shadow-md';
+        sec3Badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EE0000] text-white';
+        sec3Badge.textContent = 'Action Required';
+        repWaitBanner.classList.add('hidden');
+        cb1.disabled = false;
+        cb2.disabled = false;
+      }
+      updateSignButton();
+    }
+
+    function setViewport(mode) {
+      currentViewport = mode;
+      const container = document.getElementById('viewport-container');
+      const mobileHeader = document.getElementById('mobile-header-bar');
+      const mainCard = document.getElementById('main-card');
+      const btnDesktop = document.getElementById('btn-desktop');
+      const btnMobile = document.getElementById('btn-mobile');
+      const lineGrid1 = document.getElementById('line-grid-1');
+      const lineGrid2 = document.getElementById('line-grid-2');
+      const rulesGrid = document.getElementById('rules-grid');
+
+      if (mode === 'mobile') {
+        setRole('customer');
+        btnMobile.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all bg-white text-black shadow-sm';
+        btnDesktop.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all text-zinc-400 hover:text-white';
+
+        container.classList.add('phone-frame');
+        mobileHeader.classList.remove('hidden');
+        mainCard.classList.remove('rounded-2xl', 'shadow-xl', 'border');
+        lineGrid1.className = 'grid grid-cols-1 gap-3';
+        lineGrid2.className = 'grid grid-cols-1 gap-3';
+        rulesGrid.className = 'grid grid-cols-1 gap-3';
+      } else {
+        btnDesktop.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all bg-white text-black shadow-sm';
+        btnMobile.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all text-zinc-400 hover:text-white';
+
+        container.classList.remove('phone-frame');
+        mobileHeader.classList.add('hidden');
+        mainCard.classList.add('rounded-2xl', 'shadow-xl', 'border');
+        lineGrid1.className = 'grid grid-cols-1 sm:grid-cols-3 gap-4 items-center';
+        lineGrid2.className = 'grid grid-cols-1 sm:grid-cols-3 gap-4 items-center';
+        rulesGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-4';
+      }
+    }
+
+    function setTenure(line, isYes) {
+      if (currentRole !== 'rep') return;
+      tenure[line] = isYes;
+      const yesBtn = document.getElementById(`l${line}-yes`);
+      const noBtn = document.getElementById(`l${line}-no`);
+
+      if (isYes) {
+        yesBtn.className = 'flex-1 sm:flex-initial px-3.5 py-1.5 text-xs font-bold rounded-md bg-black text-white transition-all';
+        noBtn.className = 'flex-1 sm:flex-initial px-3.5 py-1.5 text-xs font-bold rounded-md text-zinc-600 hover:text-black transition-all';
+      } else {
+        noBtn.className = 'flex-1 sm:flex-initial px-3.5 py-1.5 text-xs font-bold rounded-md bg-[#EE0000] text-white transition-all';
+        yesBtn.className = 'flex-1 sm:flex-initial px-3.5 py-1.5 text-xs font-bold rounded-md text-zinc-600 hover:text-black transition-all';
+      }
+      recalc();
+    }
+
+    function recalc() {
+      const bal1 = Math.max(0, parseFloat(document.getElementById('l1-input').value) || 0);
+      const bal2 = Math.max(0, parseFloat(document.getElementById('l2-input').value) || 0);
+
+      // Line 1 Calculation
+      let payoff1 = tenure[1] ? Math.min(800, bal1) : 0;
+      let oop1 = bal1 - payoff1;
+      const pill1 = document.getElementById('l1-status-pill');
+      if (!tenure[1]) {
+        pill1.textContent = 'Ineligible (<3 Cycles)';
+        pill1.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-red-100 text-red-900';
+      } else if (bal1 > 800) {
+        pill1.textContent = 'Max Cap Applied ($800)';
+        pill1.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900';
+      } else {
+        pill1.textContent = 'Qualified';
+        pill1.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900';
+      }
+
+      // Line 2 Calculation
+      let payoff2 = tenure[2] ? Math.min(800, bal2) : 0;
+      let oop2 = bal2 - payoff2;
+      const pill2 = document.getElementById('l2-status-pill');
+      if (!tenure[2]) {
+        pill2.textContent = 'Ineligible (<3 Cycles)';
+        pill2.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-red-100 text-red-900';
+      } else if (bal2 > 800) {
+        pill2.textContent = 'Max Cap Applied ($800)';
+        pill2.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900';
+      } else {
+        pill2.textContent = 'Qualified';
+        pill2.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900';
+      }
+
+      document.getElementById('l1-payoff').textContent = `$${payoff1.toFixed(2)}`;
+      document.getElementById('l1-oop').textContent = `$${oop1.toFixed(2)}`;
+      document.getElementById('l2-payoff').textContent = `$${payoff2.toFixed(2)}`;
+      document.getElementById('l2-oop').textContent = `$${oop2.toFixed(2)}`;
+
+      const totalPayoff = payoff1 + payoff2;
+      const totalOop = oop1 + oop2;
+      const fullBalance = bal1 + bal2;
+
+      document.getElementById('total-payoff').textContent = `$${totalPayoff.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('total-oop').textContent = `$${totalOop.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('modal-payoff').textContent = `$${totalPayoff.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('decline-modal-oop').textContent = `$${fullBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (100% Customer Resp.)`;
+
+      const warningBanner = document.getElementById('cap-warning-banner');
+      if (totalOop > 0) {
+        warningBanner.classList.remove('hidden');
+        document.getElementById('banner-oop-amount').textContent = `$${totalOop.toFixed(2)}`;
+      } else {
+        warningBanner.classList.add('hidden');
+      }
+    }
+
+    function updateSignButton() {
+      const cb1 = document.getElementById('cb1').checked;
+      const cb2 = document.getElementById('cb2').checked;
+      const submitBtn = document.getElementById('btn-submit');
+
+      if (currentRole === 'customer' && cb1 && cb2) {
+        submitBtn.disabled = false;
+        submitBtn.className = 'w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-bold bg-[#EE0000] hover:bg-red-700 text-white cursor-pointer transition-all shadow-lg';
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.className = 'w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-bold bg-[#EE0000] text-white opacity-40 cursor-not-allowed transition-all shadow-md';
+      }
+    }
+
+    function submitAgreement() {
+      document.getElementById('modal-success').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-success').classList.add('hidden');
+    }
+
+    function openDeclineModal() {
+      recalc();
+      document.getElementById('modal-decline').classList.remove('hidden');
+    }
+
+    function closeDeclineModal() {
+      document.getElementById('modal-decline').classList.add('hidden');
+    }
+
+    function confirmDeclinePromo() {
+      document.getElementById('modal-decline').classList.add('hidden');
+      document.getElementById('cb1').checked = false;
+      document.getElementById('cb2').checked = false;
+      updateSignButton();
+      document.getElementById('declined-status-banner').classList.remove('hidden');
+      const sec3Badge = document.getElementById('section-3-badge');
+      sec3Badge.textContent = 'Promo Declined';
+      sec3Badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-[#EE0000]';
+    }
+
+    function restorePromo() {
+      document.getElementById('declined-status-banner').classList.add('hidden');
+      setRole(currentRole);
+      recalc();
+    }
+  </script>
+</body>
+</html>
