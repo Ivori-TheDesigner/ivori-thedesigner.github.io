@@ -107,3 +107,11 @@
 .case-layout aside nav a.is-active,.case-layout aside nav a[aria-current="location"]{background:rgba(117,85,230,.18);color:#fff;border-color:#a38aff;font-weight:750}
 .case-layout aside nav a.is-active::before{content:"";position:absolute;left:0;top:15%;bottom:15%;width:3px;border-radius:3px;background:#a38aff}
 @media(prefers-reduced-motion:reduce){.case-layout aside nav a{transition:none}}
+
+/* Prototype launch cards: full-screen experience without nested iframe previews */
+.verizon-prototype-launch{position:relative;overflow:hidden;padding:clamp(24px,4vw,38px);border-color:#8e76c8;background:radial-gradient(ellipse at 100% 0%,rgba(104,69,197,.34),transparent 54%),linear-gradient(135deg,#211637,#10101e);box-shadow:0 12px 35px rgba(0,0,0,.2)}
+.verizon-prototype-launch:after{content:"↗";position:absolute;right:25px;top:20px;font-size:48px;line-height:1;color:rgba(182,153,255,.19);pointer-events:none}
+.verizon-prototype-launch h3{max-width:650px}
+.verizon-prototype-launch>a{min-height:46px;background:#7655e8;box-shadow:0 7px 22px rgba(72,45,168,.28)}
+.verizon-prototype-launch>a:hover{background:#8b6aff;transform:translateY(-1px)}
+.verizon-prototype-frame,.verizon-prototype-hint{display:none}
