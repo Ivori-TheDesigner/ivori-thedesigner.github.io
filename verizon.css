@@ -101,3 +101,9 @@
 .verizon-prototype-frame--hub iframe{height:790px}
 .case-content .verizon-prototype-hint{font-size:12px;color:#d0c5e2;margin:10px 0 0;line-height:1.6}
 @media(max-width:760px){.verizon-prototype-frame{min-height:520px}.verizon-prototype-frame iframe{height:640px}.verizon-prototype-frame--hub iframe{height:740px}}
+
+/* Active section indicator follows case-study reading position */
+.case-layout aside nav a{position:relative;transition:background-color .2s ease,color .2s ease,border-color .2s ease}
+.case-layout aside nav a.is-active,.case-layout aside nav a[aria-current="location"]{background:rgba(117,85,230,.18);color:#fff;border-color:#a38aff;font-weight:750}
+.case-layout aside nav a.is-active::before{content:"";position:absolute;left:0;top:15%;bottom:15%;width:3px;border-radius:3px;background:#a38aff}
+@media(prefers-reduced-motion:reduce){.case-layout aside nav a{transition:none}}
