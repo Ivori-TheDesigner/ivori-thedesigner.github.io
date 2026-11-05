@@ -83,3 +83,13 @@
 .verizon-final-note h3{font-size:clamp(20px,2.6vw,27px);line-height:1.3;margin:10px 0}
 .case-content .verizon-final-note p{font-size:15px;line-height:1.75;margin:0}
 @media(max-width:850px){.verizon-validation{grid-template-columns:1fr}}
+
+/* Embedded launch points for original interactive prototypes */
+.verizon-prototype-launch{margin:30px 0 38px;padding:25px 27px;border:1px solid #8065b0;border-radius:18px;background:radial-gradient(circle at 90% 5%,#342357,#151225 70%)}
+.verizon-prototype-launch>span{display:block;color:#d1bfff;font:750 11px/1.5 monospace;letter-spacing:.09em}
+.verizon-prototype-launch h3{font-size:clamp(21px,2.5vw,28px);line-height:1.3;margin:10px 0}
+.case-content .verizon-prototype-launch p{font-size:15px;line-height:1.7;margin:0 0 20px}
+.verizon-prototype-launch>a{display:inline-flex;align-items:center;justify-content:center;padding:12px 19px;border-radius:999px;background:#6044d7;color:#fff;font-size:14px;font-weight:750;text-decoration:none;border:1px solid #aa95ff}
+.verizon-prototype-launch>a:hover{background:#7657ef}
+.verizon-prototype-launch small{display:block;margin-top:14px;color:#c3bad5;font-size:12px;line-height:1.6}
+@media(max-width:600px){.verizon-prototype-launch{padding:20px}.verizon-prototype-launch>a{width:100%;text-align:center}}
