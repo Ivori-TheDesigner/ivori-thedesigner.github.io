@@ -93,3 +93,11 @@
 .verizon-prototype-launch>a:hover{background:#7657ef}
 .verizon-prototype-launch small{display:block;margin-top:14px;color:#c3bad5;font-size:12px;line-height:1.6}
 @media(max-width:600px){.verizon-prototype-launch{padding:20px}.verizon-prototype-launch>a{width:100%;text-align:center}}
+
+/* Show interactive original HTML prototypes directly in the case study */
+.verizon-prototype-frame{width:100%;margin:24px 0 10px;border:1px solid #7c6a9c;border-radius:14px;overflow:hidden;background:#fff;min-height:650px}
+.verizon-prototype-frame iframe{display:block;width:100%;height:720px;border:0;background:#fff}
+.verizon-prototype-frame--hub{max-width:760px;margin-inline:auto}
+.verizon-prototype-frame--hub iframe{height:790px}
+.case-content .verizon-prototype-hint{font-size:12px;color:#d0c5e2;margin:10px 0 0;line-height:1.6}
+@media(max-width:760px){.verizon-prototype-frame{min-height:520px}.verizon-prototype-frame iframe{height:640px}.verizon-prototype-frame--hub iframe{height:740px}}
