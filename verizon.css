@@ -44,3 +44,17 @@
 .journey-step .journey-response{padding-top:12px;margin-top:14px!important;border-top:1px solid #6d5b8a66}
 .journey-step .journey-response strong{color:#d6c7ff}
 @media(max-width:760px){.verizon-evidence{grid-template-columns:1fr}.verizon-journey{grid-template-columns:1fr}.journey-step{padding:18px}}
+
+/* Formula: decision logic as readable, accessible checkpoints */
+.formula-checkpoints{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0 28px}
+.formula-checkpoint{display:flex;flex-direction:column;min-width:0;padding:19px;border:1px solid #65548b;border-radius:15px;background:linear-gradient(160deg,#201934,#131125)}
+.formula-checkpoint>span,.formula-principle>span{font:750 11px/1.5 monospace;letter-spacing:.07em;color:#d2bfff}
+.formula-checkpoint h4{font-size:18px;line-height:1.35;margin:13px 0 10px}
+.case-content .formula-checkpoint>p{font-size:14px;line-height:1.6;margin:0 0 16px}
+.formula-condition{margin-top:auto;border-top:1px solid #79649b77;padding-top:14px}
+.formula-condition strong{display:block;font-size:12px;color:#d6c4ff}
+.case-content .formula-condition p{font-size:13px;line-height:1.6;margin:6px 0 0}
+.formula-principle{margin:12px 0 36px;padding:22px 24px;border:1px solid #816ba8;border-left:4px solid #bca4ff;border-radius:12px;background:#19142b}
+.formula-principle>strong{display:block;font-size:clamp(17px,2.4vw,23px);line-height:1.35;margin:9px 0}
+.case-content .formula-principle p{font-size:14px;line-height:1.7;margin:0}
+@media(max-width:850px){.formula-checkpoints{grid-template-columns:1fr}.formula-checkpoint{padding:18px}.formula-condition{margin-top:10px}}
